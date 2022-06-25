@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="carGame">
+        <div class="score"></div>
+        <div class="startScreen">
+            <p>
+                Press here to start <br>
+                Arrow keys to move <br>
+                If you bit another car you will lose
+            </p>
+        </div>
+        <div class="gameArea hide"> hello </div>
+    </div>
+
+    <script>
+        const score = document.querySelector('.score');
+        const startScreen = document.querySelector('.startScreen');
+        const gameArea = document.querySelector('.gameArea');
+
+        let keys = {ArrowUp : false, ArrowDown:false, ArrowRight: false, ArrowLeft: false };
+
+        //Note we are not using the keyup() and keydown() with brackets as it will making it run without pressing the key.
+        document.addEventListener("keydown",keyup);
+        document.addEventListener("keyup",keydown);
+
+        function keyup(e){
+            keys[e.key] = true;
+            console.log(keys);
+        }
+
+        function keydown(e){
+            keys[e.key] = false;
+            console.log(keys);
+        }
+
+    </script>
+</body>
+</html>
