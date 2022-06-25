@@ -5,18 +5,19 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="style/style.css">
 </head>
 <body>
     <div class="carGame">
         <div class="score"></div>
-        <div class="startScreen">
+        <div class="startScreen" style="display: block;">
             <p>
                 Press here to start <br>
                 Arrow keys to move <br>
                 If you bit another car you will lose
             </p>
         </div>
-        <div class="gameArea hide"> hello </div>
+        <div class="gameArea hide" style="display: none;"></div>
     </div>
 
     <script>
@@ -24,8 +25,11 @@
         const startScreen = document.querySelector('.startScreen');
         const gameArea = document.querySelector('.gameArea');
 
-        let keys = {ArrowUp : false, ArrowDown:false, ArrowRight: false, ArrowLeft: false };
+        startScreen.addEventListener("click",start);
 
+        let player = {};
+        let keys = {ArrowUp : false, ArrowDown:false, ArrowRight: false, ArrowLeft: false };
+        
         //Note we are not using the keyup() and keydown() with brackets as it will making it run without pressing the key.
         document.addEventListener("keydown",keyup);
         document.addEventListener("keyup",keydown);
@@ -38,6 +42,23 @@
         function keydown(e){
             keys[e.key] = false;
             console.log(keys);
+        }
+
+        function gamePlay(){
+            console.log('a');
+            window.requestAnimationFrame(gamePlay);
+        }
+
+        function start(){
+            gameArea.style.display = 'block';
+            startScreen.style.display = 'none';
+            player.start = true;
+            window.requestAnimationFrame(gamePlay);
+
+            let car = document.createElement('div');
+            car.setAttribute('class','car');
+            gameArea.appendChild(car);
+            
         }
 
     </script>
