@@ -59,6 +59,23 @@
             })
         }
 
+        function moveEnemy(){
+            let enemy = document.querySelectorAll('.enemy');
+            
+            enemy.forEach(function(item){
+                // This if statement checks that when the lines have reached the end of screen then we should
+                // start it all over again from the top.
+                if(item.y >= 700){
+                    item.y = -300;
+                    item.style.left = Math.floor(Math.random() * 350) + 'px';
+                }
+                
+                item.y += player.speed;
+                item.style.top = item.y + "px";
+                console.log(item);
+            })
+        }
+
         function gamePlay(){
             let car = document.querySelector('.car');
             let road = gameArea.getBoundingClientRect();
@@ -67,6 +84,7 @@
             if(player.start){
 
                 moveLines();
+                moveEnemy();
                 // Adding the movement key functionality. So first we take the top and left offset of the car and then 
                 // we will be dynamically changing the top and left offset based on the arrow key pressed. Note that  
                 // requestAnimationframe is necessary so that we can move between the fucntion back-forth. Otherwise 
@@ -110,7 +128,15 @@
             player.x = car.offsetLeft;
             player.y = car.offsetTop;
 
-            
+            for(x=0; x<3; x++){
+                let enemyCar = document.createElement('div');
+                enemyCar.setAttribute('class','enemy');
+                enemyCar.y = ((x+1) * 150) * -1;
+                enemyCar.style.top = enemyCar.y + "px";
+                enemyCar.style.background = 'blue';
+                enemyCar.style.left = Math.floor(Math.random() * 350);
+                gameArea.appendChild(enemyCar);
+            }            
         }
 
     </script>
