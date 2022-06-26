@@ -81,6 +81,14 @@
             car.setAttribute('class','car');
             gameArea.appendChild(car);
 
+            for(let x = 0; x < 5; x +=1){
+                let roadlines = document.createElement('div');
+                roadlines.setAttribute('class','lines');
+                roadlines.style.top = (x*150) + "px";  // This line is added so it means that first line will be at the top 0 then next line will be made at 150px apart.
+                gameArea.appendChild(roadlines);
+            }
+            
+
             player.x = car.offsetLeft;
             player.y = car.offsetTop;
 
