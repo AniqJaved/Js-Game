@@ -27,7 +27,7 @@
 
         startScreen.addEventListener("click",start);
 
-        let player = {};
+        let player = { speed:5 };
         let keys = {ArrowUp : false, ArrowDown:false, ArrowRight: false, ArrowLeft: false };
         
         //Note we are not using the keyup() and keydown() with brackets as it will making it run without pressing the key.
@@ -46,18 +46,39 @@
 
         function gamePlay(){
             console.log('a');
-            window.requestAnimationFrame(gamePlay);
+            let car = document.querySelector('.car');
+
+            if(player.start){
+                // Adding the movement key functionality. So first we take the top and left offset of the car and then 
+                // we will be dynamically changing the top and left offset based on the arrow key pressed. Note that  
+                // requestAnimationframe is necessary so that we can move between the fucntion back-forth. Otherwise 
+                // it would not have possible to move the car.
+                if(keys.ArrowUp){player.y -= player.speed}
+                if(keys.ArrowDown){player.y += player.speed}
+                if(keys.ArrowLeft){player.x -= player.speed}
+                if(keys.ArrowRight){player.x += player.speed}
+                car.style.top = player.y + 'px';
+                car.style.left = player.x + 'px';
+
+                window.requestAnimationFrame(gamePlay);
+            }
+            
         }
 
         function start(){
             gameArea.style.display = 'block';
             startScreen.style.display = 'none';
             player.start = true;
-            window.requestAnimationFrame(gamePlay);
+            
 
             let car = document.createElement('div');
             car.setAttribute('class','car');
             gameArea.appendChild(car);
+
+            player.x = car.offsetLeft;
+            player.y = car.offsetTop;
+
+            window.requestAnimationFrame(gamePlay);
             
         }
 
