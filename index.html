@@ -47,16 +47,22 @@
         function gamePlay(){
             console.log('a');
             let car = document.querySelector('.car');
+            let road = gameArea.getBoundingClientRect();
+            console.log(road.offsetLeft);
 
             if(player.start){
                 // Adding the movement key functionality. So first we take the top and left offset of the car and then 
                 // we will be dynamically changing the top and left offset based on the arrow key pressed. Note that  
                 // requestAnimationframe is necessary so that we can move between the fucntion back-forth. Otherwise 
                 // it would not have possible to move the car.
-                if(keys.ArrowUp){player.y -= player.speed}
-                if(keys.ArrowDown){player.y += player.speed}
-                if(keys.ArrowLeft){player.x -= player.speed}
-                if(keys.ArrowRight){player.x += player.speed}
+                if(keys.ArrowUp && player.y > (road.top + 70))
+                {player.y -= player.speed}
+                if(keys.ArrowDown && player.y < (road.bottom - 70))
+                {player.y += player.speed}
+                if(keys.ArrowLeft && player.x > 0)
+                {player.x -= player.speed}
+                if(keys.ArrowRight && player.x < (road.width - 50))
+                {player.x += player.speed}
                 car.style.top = player.y + 'px';
                 car.style.left = player.x + 'px';
 
