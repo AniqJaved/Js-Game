@@ -36,21 +36,37 @@
 
         function keyup(e){
             keys[e.key] = true;
-            console.log(keys);
         }
 
         function keydown(e){
             keys[e.key] = false;
-            console.log(keys);
+        }
+
+        // It is usd to animate the movement of the lines on the screen
+        function moveLines(){
+            let lines = document.querySelectorAll('.lines');
+            
+            lines.forEach(function(item){
+                // This if statement checks that when the lines have reached the end of screen then we should
+                // start it all over again from the top.
+                if(item.y >= 700){
+                    item.y -= 750;
+                }
+                
+                item.y += player.speed;
+                item.style.top = item.y + "px";
+                console.log(item);
+            })
         }
 
         function gamePlay(){
-            console.log('a');
             let car = document.querySelector('.car');
             let road = gameArea.getBoundingClientRect();
-            console.log(road.offsetLeft);
+            
 
             if(player.start){
+
+                moveLines();
                 // Adding the movement key functionality. So first we take the top and left offset of the car and then 
                 // we will be dynamically changing the top and left offset based on the arrow key pressed. Note that  
                 // requestAnimationframe is necessary so that we can move between the fucntion back-forth. Otherwise 
@@ -75,24 +91,25 @@
             gameArea.style.display = 'block';
             startScreen.style.display = 'none';
             player.start = true;
+            window.requestAnimationFrame(gamePlay);
+
+
             
 
+            for(let x = 0; x < 5; x++){
+                let roadlines = document.createElement('div');
+                roadlines.setAttribute('class','lines');
+                roadlines.y = (x*150);
+                roadlines.style.top = roadlines.y + "px";  // This line is added so it means that first line will be at the top 0 then next line will be made at 150px apart.
+                gameArea.appendChild(roadlines);
+            }
             let car = document.createElement('div');
             car.setAttribute('class','car');
             gameArea.appendChild(car);
 
-            for(let x = 0; x < 5; x +=1){
-                let roadlines = document.createElement('div');
-                roadlines.setAttribute('class','lines');
-                roadlines.style.top = (x*150) + "px";  // This line is added so it means that first line will be at the top 0 then next line will be made at 150px apart.
-                gameArea.appendChild(roadlines);
-            }
-            
-
             player.x = car.offsetLeft;
             player.y = car.offsetTop;
 
-            window.requestAnimationFrame(gamePlay);
             
         }
 
