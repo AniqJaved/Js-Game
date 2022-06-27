@@ -14,10 +14,10 @@
             <p>
                 Press here to start <br>
                 Arrow keys to move <br>
-                If you bit another car you will lose
+                If you hit another car you will lose
             </p>
         </div>
-        <div class="gameArea hide" style="display: none;"></div>
+        <div class="gameArea " ></div>
     </div>
 
     <script>
@@ -27,7 +27,7 @@
 
         startScreen.addEventListener("click",start);
 
-        let player = { speed:5 };
+        let player = { speed:5, score: 0 };
         let keys = {ArrowUp : false, ArrowDown:false, ArrowRight: false, ArrowLeft: false };
         
         //Note we are not using the keyup() and keydown() with brackets as it will making it run without pressing the key.
@@ -49,6 +49,10 @@
             return !((a.bottom < b.top) || (a.top > b.bottom) || 
                 (a.right < b.left) || (a.left > b.right))
         }
+        function endGame(){
+            player.start = false;
+            startScreen.style.display = 'block';
+        }
 
         // It is usd to animate the movement of the lines on the screen
         function moveLines(){
@@ -69,10 +73,11 @@
         function moveEnemy(car){
             let enemy = document.querySelectorAll('.enemy');
             enemy.forEach(function(item){
-                
+
                 //Checking the collison with the enemy car.
                 if(isCollide(car,item)){
                     console.log("hit");
+                    endGame();
                 }
                 // This if statement checks that when the cars have reached the end of screen then we should
                 // start it all over again from the top.
@@ -101,7 +106,7 @@
                 // it would not have possible to move the car.
                 if(keys.ArrowUp && player.y > (road.top + 70))
                 {player.y -= player.speed}
-                if(keys.ArrowDown && player.y < (road.bottom - 70))
+                if(keys.ArrowDown && player.y < (road.bottom - 85))
                 {player.y += player.speed}
                 if(keys.ArrowLeft && player.x > 0)
                 {player.x -= player.speed}
@@ -111,14 +116,16 @@
                 car.style.left = player.x + 'px';
 
                 window.requestAnimationFrame(gamePlay);
+                score.innerHTML = `Score:${player.score++}`;
             }
             
         }
 
         function start(){
-            gameArea.style.display = 'block';
             startScreen.style.display = 'none';
+            gameArea.innerHTML = "";
             player.start = true;
+            player.score = 0;
             window.requestAnimationFrame(gamePlay);
 
 
@@ -143,10 +150,18 @@
                 enemyCar.setAttribute('class','enemy');
                 enemyCar.y = ((x+1) * 350) * -1;
                 enemyCar.style.top = enemyCar.y + "px";
-                enemyCar.style.background = 'blue';
+                enemyCar.style.backgroundColor = randomColor();
                 enemyCar.style.left = Math.floor(Math.random() * 350) + "px";
                 gameArea.appendChild(enemyCar);
             }            
+        }
+
+        function randomColor(){
+            function c(){
+                let hex = Math.floor(Math.random() * 256).toString(16);
+                return ("0" + String(hex)).substr(-2);
+            }
+            return "#"+c()+c()+c();
         }
 
     </script>
