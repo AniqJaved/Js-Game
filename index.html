@@ -31,15 +31,23 @@
         let keys = {ArrowUp : false, ArrowDown:false, ArrowRight: false, ArrowLeft: false };
         
         //Note we are not using the keyup() and keydown() with brackets as it will making it run without pressing the key.
-        document.addEventListener("keydown",keyup);
-        document.addEventListener("keyup",keydown);
+        document.addEventListener("keydown",keydown);
+        document.addEventListener("keyup",keyup);
 
         function keyup(e){
-            keys[e.key] = true;
+            keys[e.key] = false;
         }
 
         function keydown(e){
-            keys[e.key] = false;
+            keys[e.key] = true;
+        }
+
+        function isCollide(a,b){
+            a = a.getBoundingClientRect();
+            b = b.getBoundingClientRect();
+                
+            return !((a.bottom < b.top) || (a.top > b.bottom) || 
+                (a.right < b.left) || (a.left > b.right))
         }
 
         // It is usd to animate the movement of the lines on the screen
@@ -55,24 +63,26 @@
                 
                 item.y += player.speed;
                 item.style.top = item.y + "px";
-                console.log(item);
             })
         }
 
-        function moveEnemy(){
+        function moveEnemy(car){
             let enemy = document.querySelectorAll('.enemy');
-            
             enemy.forEach(function(item){
-                // This if statement checks that when the lines have reached the end of screen then we should
+                
+                //Checking the collison with the enemy car.
+                if(isCollide(car,item)){
+                    console.log("hit");
+                }
+                // This if statement checks that when the cars have reached the end of screen then we should
                 // start it all over again from the top.
-                if(item.y >= 700){
+                if(item.y >= 750){
                     item.y = -300;
                     item.style.left = Math.floor(Math.random() * 350) + 'px';
                 }
                 
                 item.y += player.speed;
                 item.style.top = item.y + "px";
-                console.log(item);
             })
         }
 
@@ -84,7 +94,7 @@
             if(player.start){
 
                 moveLines();
-                moveEnemy();
+                moveEnemy(car);
                 // Adding the movement key functionality. So first we take the top and left offset of the car and then 
                 // we will be dynamically changing the top and left offset based on the arrow key pressed. Note that  
                 // requestAnimationframe is necessary so that we can move between the fucntion back-forth. Otherwise 
@@ -131,10 +141,10 @@
             for(x=0; x<3; x++){
                 let enemyCar = document.createElement('div');
                 enemyCar.setAttribute('class','enemy');
-                enemyCar.y = ((x+1) * 150) * -1;
+                enemyCar.y = ((x+1) * 350) * -1;
                 enemyCar.style.top = enemyCar.y + "px";
                 enemyCar.style.background = 'blue';
-                enemyCar.style.left = Math.floor(Math.random() * 350);
+                enemyCar.style.left = Math.floor(Math.random() * 350) + "px";
                 gameArea.appendChild(enemyCar);
             }            
         }
